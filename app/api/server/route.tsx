@@ -1,9 +1,12 @@
 import { type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const queryData = request.nextUrl.searchParams.get("pId");
-  // queryData is "hello" for /api/search?query=hello
-  //const filePath = `path/to/../../blogdata/${queryData}.json`;
+  const queryDataPId = request.nextUrl.searchParams.get("pId");
 
-  return new Response("The link returned from the server is: " + queryData);
+  const resData = await fetch(
+    `https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${queryDataPId}&key=${process.env.API_KEY}`
+  );
+  const resJson = await resData.json();
+  console.log(resJson);
+  return new Response("The link returned from the server is: " + queryDataPId);
 }
