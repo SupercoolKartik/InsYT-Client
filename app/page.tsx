@@ -59,7 +59,6 @@ export default function Home() {
       console.error("Playlist ID not found in the URL");
     }
     setUrl("");
-    //setDur("");
   };
 
   //FUNCTION TO FORMAT THE DURATION
@@ -75,17 +74,18 @@ export default function Home() {
 
     // Add hours, minutes, and seconds to the array if they are not zero
     if (hours > 0) {
-      timeComponents.push(hours < 10 ? `0${hours}` : hours);
+      timeComponents.push(hours < 10 ? `0${hours}h ` : `${hours}h `);
     }
     if (minutes > 0 || hours > 0) {
-      timeComponents.push(minutes < 10 ? `0${minutes}` : minutes);
+      timeComponents.push(minutes < 10 ? `0${minutes}m ` : `${minutes}m `);
     }
+    timeComponents.push(
+      remainingSeconds < 10
+        ? `0${remainingSeconds.toFixed(0)}s `
+        : `${remainingSeconds.toFixed(0)}s `
+    );
 
-    // Convert remainingSeconds to a string with two decimal places and Add it to the array
-    timeComponents.push(remainingSeconds.toFixed(2));
-
-    // Join the time components with colons
-    return timeComponents.join(":");
+    return timeComponents;
   };
 
   return (
@@ -93,6 +93,9 @@ export default function Home() {
       <span className="text-xl font-serif text-red-500 font-bold">insYT</span>
       <span>{responseData?.playlist_name}</span>
       <span>{responseData?.playlist_size}</span>
+      {/* <span>
+        {dur}
+      </span> */}
       <span>
         {responseData?.playlist_length &&
           formatTime(responseData.playlist_length, 1)}
