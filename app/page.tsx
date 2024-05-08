@@ -1,11 +1,15 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, useEffect, FormEvent } from "react";
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
   const [url, setUrl] = useState("");
-  const [dur, setDur] = useState("");
+  //const [dur, setDur] = useState("");
   const [responseData, setResponseData] = useState<ResponseData | null>(null);
+
+  useEffect(() => {
+    //setDur("");
+  }, []);
 
   // Define a type/interface for the response data
   interface ResponseData {
@@ -38,10 +42,10 @@ export default function Home() {
           const responseBody = await response.json();
           setResponseData(responseBody);
           console.log("Response:", responseBody);
-          if (responseData?.playlist_length) {
-            const formatedDuration = formatTime(responseData?.playlist_length);
-            setDur(formatedDuration);
-          }
+          // if (responseData?.playlist_length) {
+          //   const formatedDuration = formatTime(responseData?.playlist_length);
+          //   //setDur(formatedDuration);
+          // }
         } else {
           console.error(
             "Failed to submit the PlaylistId:",
@@ -55,14 +59,16 @@ export default function Home() {
       console.error("Playlist ID not found in the URL");
     }
     setUrl("");
+    //setDur("");
   };
 
   //FUNCTION TO FORMAT THE DURATION
-  const formatTime = (seconds: number) => {
+  const formatTime = (seconds: number, speed: number) => {
     // Calculate hours, minutes, and seconds
-    let hours = Math.floor(seconds / 3600);
-    let minutes = Math.floor((seconds % 3600) / 60);
-    let remainingSeconds = seconds % 60;
+    const adjustedSec = seconds / speed;
+    let hours = Math.floor(adjustedSec / 3600);
+    let minutes = Math.floor((adjustedSec % 3600) / 60);
+    let remainingSeconds = adjustedSec % 60;
 
     // Initialize an empty array to store the time components
     let timeComponents = [];
@@ -74,9 +80,9 @@ export default function Home() {
     if (minutes > 0 || hours > 0) {
       timeComponents.push(minutes < 10 ? `0${minutes}` : minutes);
     }
-    timeComponents.push(
-      remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds
-    );
+
+    // Convert remainingSeconds to a string with two decimal places and Add it to the array
+    timeComponents.push(remainingSeconds.toFixed(2));
 
     // Join the time components with colons
     return timeComponents.join(":");
@@ -87,7 +93,26 @@ export default function Home() {
       <span className="text-xl font-serif text-red-500 font-bold">insYT</span>
       <span>{responseData?.playlist_name}</span>
       <span>{responseData?.playlist_size}</span>
-      <span>{dur}</span>
+      <span>
+        {responseData?.playlist_length &&
+          formatTime(responseData.playlist_length, 1)}
+      </span>
+      <span>
+        {responseData?.playlist_length &&
+          formatTime(responseData.playlist_length, 1.25)}
+      </span>
+      <span>
+        {responseData?.playlist_length &&
+          formatTime(responseData.playlist_length, 1.5)}
+      </span>
+      <span>
+        {responseData?.playlist_length &&
+          formatTime(responseData.playlist_length, 1.75)}
+      </span>
+      <span>
+        {responseData?.playlist_length &&
+          formatTime(responseData.playlist_length, 2)}
+      </span>
       <form onSubmit={linkCheck} className="flex my-2">
         <input
           onChange={enteringLink}
@@ -97,7 +122,10 @@ export default function Home() {
           type="text"
           placeholder="Enter link here.."
         />
-        <button className="flex-shrink-0 md:ml-1 bg-red-400 text-white py-2 px-3 focus:outline-none hover:bg-red-600 rounded-r-md">
+        <button
+          type="submit"
+          className="flex-shrink-0 md:ml-1 bg-red-400 text-white py-2 px-3 focus:outline-none hover:bg-red-600 rounded-r-md"
+        >
           Check Details
         </button>
       </form>
