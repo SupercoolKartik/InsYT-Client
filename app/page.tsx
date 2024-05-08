@@ -4,6 +4,7 @@ import { useState, ChangeEvent, FormEvent } from "react";
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
   const [url, setUrl] = useState("");
+  const [dur, setDur] = useState("");
   const [responseData, setResponseData] = useState<ResponseData | null>(null);
 
   // Define a type/interface for the response data
@@ -37,6 +38,10 @@ export default function Home() {
           const responseBody = await response.json();
           setResponseData(responseBody);
           console.log("Response:", responseBody);
+          if (responseData?.playlist_length) {
+            const formatedDuration = formatTime(responseData?.playlist_length);
+            setDur(formatedDuration);
+          }
         } else {
           console.error(
             "Failed to submit the PlaylistId:",
@@ -52,12 +57,37 @@ export default function Home() {
     setUrl("");
   };
 
+  //FUNCTION TO FORMAT THE DURATION
+  const formatTime = (seconds: number) => {
+    // Calculate hours, minutes, and seconds
+    let hours = Math.floor(seconds / 3600);
+    let minutes = Math.floor((seconds % 3600) / 60);
+    let remainingSeconds = seconds % 60;
+
+    // Initialize an empty array to store the time components
+    let timeComponents = [];
+
+    // Add hours, minutes, and seconds to the array if they are not zero
+    if (hours > 0) {
+      timeComponents.push(hours < 10 ? `0${hours}` : hours);
+    }
+    if (minutes > 0 || hours > 0) {
+      timeComponents.push(minutes < 10 ? `0${minutes}` : minutes);
+    }
+    timeComponents.push(
+      remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds
+    );
+
+    // Join the time components with colons
+    return timeComponents.join(":");
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <span className="text-xl font-serif text-red-500 font-bold">insYT</span>
       <span>{responseData?.playlist_name}</span>
       <span>{responseData?.playlist_size}</span>
-      <span>{responseData?.playlist_length}</span>
+      <span>{dur}</span>
       <form onSubmit={linkCheck} className="flex my-2">
         <input
           onChange={enteringLink}
