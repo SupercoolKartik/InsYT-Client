@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, ChangeEvent, useEffect, FormEvent } from "react";
+
+import Navbar from "@/components/ui/navbar";
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
-  const [url, setUrl] = useState("");
+  //const [url, setUrl] = useState("");
   //const [dur, setDur] = useState("");
   const [responseData, setResponseData] = useState<ResponseData | null>(null);
 
@@ -35,14 +38,10 @@ export default function Home() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    //console.log(values);
-    //Extracting the pId from the link
-    const urll = values.urlField;
-    console.log(urll);
+    const url = values.urlField;
+    console.log(url);
     const regex = /(?:list=)(.*)/;
-    const match = urll.match(regex);
+    const match = url.match(regex);
     if (match) {
       const playlistId = match[1];
 
@@ -74,7 +73,7 @@ export default function Home() {
     } else {
       console.error("Playlist ID not found in the URL");
     }
-    setUrl("");
+    // setUrl("");
   }
 
   // useEffect(() => {
@@ -88,9 +87,9 @@ export default function Home() {
     playlist_length: number;
   }
   const server_url = process.env.NEXT_PUBLIC_SERVER_URL;
-  const enteringLink = (e: ChangeEvent<HTMLInputElement>) => {
-    setUrl(e.target.value);
-  };
+  // const enteringLink = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setUrl(e.target.value);
+  // };
 
   //FUNCTION TO FORMAT THE DURATION
   const formatTime = (seconds: number, speed: number) => {
@@ -120,10 +119,12 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <span className="text-xl font-serif text-red-500 font-bold">insYT</span>
-      <span>Title: {responseData?.playlist_name}</span>
-      <span>No of items: {responseData?.playlist_size}</span>
+    <main className="flex min-h-screen flex-col items-center justify-between py-24 px-6">
+      <Navbar />
+      <span> {responseData && `Title: ${responseData?.playlist_name}`}</span>
+      <span>
+        {responseData && `No of items: ${responseData?.playlist_size}`}
+      </span>
       {/* <span>
         {dur}
       </span> */}
