@@ -5,6 +5,8 @@
  */
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { VscGithub } from "react-icons/vsc";
+import { TbSunLow } from "react-icons/tb";
 
 const Navbar = () => {
   return (
@@ -27,16 +29,14 @@ const Navbar = () => {
         </Link> */}
       </nav>
       <div className="buttons flex absolute right-2">
-        <Button className="" size="sm" variant="outline">
-          GitHub
+        <Button className="text-lg" size="sm" variant="outline">
+          <TbSunLow />
         </Button>
-        <Button className="" size="sm" variant="outline">
-          Theme
+        <Button className="text-lg" size="sm" variant="outline">
+          <VscGithub />
         </Button>
       </div>
     </div>
   );
 };
 export default Navbar;
-
-

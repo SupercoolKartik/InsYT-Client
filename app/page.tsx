@@ -2,8 +2,9 @@
 
 import { useState, ChangeEvent, useEffect, FormEvent } from "react";
 
-import Navbar from "@/components/ui/navbar";
+import Navbar from "@/components/navbar";
 
+import Footer from "@/components/footer";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -19,16 +20,19 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 export default function Home() {
-  const [inputValue, setInputValue] = useState("");
-  //const [url, setUrl] = useState("");
-  //const [dur, setDur] = useState("");
   const [responseData, setResponseData] = useState<ResponseData | null>(null);
+  // Define a type/interface for the response data
+  interface ResponseData {
+    playlist_name: string;
+    playlist_size: number;
+    playlist_length: number;
+  }
 
   const formSchema = z.object({
     urlField: z.string().min(2),
   });
 
-  // 1. Define your form.
+  // Defining input form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,7 +40,7 @@ export default function Home() {
     },
   });
 
-  // 2. Define a submit handler.
+  // Defining submit handler for input form.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const url = values.urlField;
     console.log(url);
@@ -76,20 +80,7 @@ export default function Home() {
     // setUrl("");
   }
 
-  // useEffect(() => {
-  //   //setDur("");
-  // }, []);
-
-  // Define a type/interface for the response data
-  interface ResponseData {
-    playlist_name: string;
-    playlist_size: number;
-    playlist_length: number;
-  }
   const server_url = process.env.NEXT_PUBLIC_SERVER_URL;
-  // const enteringLink = (e: ChangeEvent<HTMLInputElement>) => {
-  //   setUrl(e.target.value);
-  // };
 
   //FUNCTION TO FORMAT THE DURATION
   const formatTime = (seconds: number, speed: number) => {
@@ -125,9 +116,6 @@ export default function Home() {
       <span>
         {responseData && `No of items: ${responseData?.playlist_size}`}
       </span>
-      {/* <span>
-        {dur}
-      </span> */}
       <ul>
         <li>
           {responseData?.playlist_length &&
@@ -155,7 +143,7 @@ export default function Home() {
         <form
           onSubmit={form.handleSubmit((data) => {
             onSubmit(data);
-            form.reset(); // Reset the form after submission
+            form.reset(); // Resets the form input data after submission
           })}
           className="flex"
         >
@@ -186,6 +174,7 @@ export default function Home() {
           />
         </form>
       </Form>
+      <Footer />
     </main>
   );
 }
