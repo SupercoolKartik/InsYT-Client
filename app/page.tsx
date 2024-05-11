@@ -145,7 +145,7 @@ export default function Home() {
             onSubmit(data);
             form.reset(); // Resets the form input data after submission
           })}
-          className="flex"
+          className="flex "
         >
           <FormField
             control={form.control}
@@ -156,14 +156,22 @@ export default function Home() {
                 <div className="flex">
                   <FormControl>
                     <Input
+                      className="h-8 sm:h-9 text-xs sm:text-sm md:text-normal focus-visible:ring-red-700 rounded-r-none"
                       placeholder="www.youtube.com/playlist?list=example123..."
                       {...field}
                     />
                   </FormControl>
-                  <Button type="submit">Analyze</Button>
+                  <Button
+                    className=""
+                    variant="insyt"
+                    size="insyt"
+                    type="submit"
+                  >
+                    Analyze
+                  </Button>
                 </div>
 
-                <FormDescription>
+                <FormDescription className="text-xs sm:md">
                   You can enter a playlist link, playlist ID or even a video
                   link from the playlist! This only works with playlists with
                   upto 50 videos as of now.
