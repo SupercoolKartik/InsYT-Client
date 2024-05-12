@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent, useEffect, FormEvent } from "react";
+import { useState } from "react";
 
 import Navbar from "@/components/navbar";
 
@@ -110,79 +110,81 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between py-24 px-6">
+    <main className="min-h-screen overflow-hidden">
       <Navbar />
-      <span> {responseData && `Title: ${responseData?.playlist_name}`}</span>
-      <span>
-        {responseData && `No of items: ${responseData?.playlist_size}`}
-      </span>
-      <ul>
-        <li>
+      <div className="main-content flex flex-col flex-grow justify-center items-center my-36 text-sm mx-5">
+        <span> {responseData && `Title: ${responseData?.playlist_name}`}</span>
+        <span>
+          {responseData && `No of items: ${responseData?.playlist_size}`}
+        </span>
+        <span>
+          The playlist is{" "}
           {responseData?.playlist_length &&
-            formatTime(responseData.playlist_length, 1)}
-        </li>
-        <li>
-          {responseData?.playlist_length &&
-            formatTime(responseData.playlist_length, 1.25)}
-        </li>
-        <li>
-          {responseData?.playlist_length &&
-            formatTime(responseData.playlist_length, 1.5)}
-        </li>
-        <li>
-          {responseData?.playlist_length &&
-            formatTime(responseData.playlist_length, 1.75)}
-        </li>
-        <li>
-          {responseData?.playlist_length &&
-            formatTime(responseData.playlist_length, 2)}
-        </li>
-      </ul>
+            formatTime(responseData.playlist_length, 1)}{" "}
+          long
+        </span>
 
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit((data) => {
-            onSubmit(data);
-            form.reset(); // Resets the form input data after submission
-          })}
-          className="flex "
-        >
-          <FormField
-            control={form.control}
-            name="urlField"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Find length of any YouTube playlist:</FormLabel>
-                <div className="flex">
-                  <FormControl>
-                    <Input
-                      className="h-8 sm:h-9 text-xs sm:text-sm md:text-normal focus-visible:ring-red-700 rounded-r-none"
-                      placeholder="www.youtube.com/playlist?list=example123..."
-                      {...field}
-                    />
-                  </FormControl>
-                  <Button
-                    className=""
-                    variant="insyt"
-                    size="insyt"
-                    type="submit"
-                  >
-                    Analyze
-                  </Button>
-                </div>
+        {responseData?.playlist_length && (
+          <ul className="text-sm sm:text-normal">
+            <li>The time it will gonna take you to watch</li>
+            <li>
+              At normal speed: {formatTime(responseData.playlist_length, 1)}
+            </li>
+            <li>At 1.25x : {formatTime(responseData.playlist_length, 1.25)}</li>
+            <li>At 1.50x : {formatTime(responseData.playlist_length, 1.5)}</li>
+            <li>At 1.75x : {formatTime(responseData.playlist_length, 1.75)}</li>
+            <li>At 2x : {formatTime(responseData.playlist_length, 2)}</li>
+          </ul>
+        )}
+      </div>
 
-                <FormDescription className="text-xs sm:md">
-                  You can enter a playlist link, playlist ID or even a video
-                  link from the playlist! This only works with playlists with
-                  upto 50 videos as of now.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </form>
-      </Form>
-      <Footer />
+      {/* Form + Footer */}
+      <div className="form+footer w-full flex flex-col absolute bottom-0 justify-center items-center space-y-3">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit((data) => {
+              onSubmit(data);
+              form.reset(); // Resets the form input data after submission
+            })}
+            className="flex mx-7 sm:mx-10 md:mx-12"
+          >
+            <FormField
+              control={form.control}
+              name="urlField"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Find length of any YouTube playlist:</FormLabel>
+                  <div className="flex">
+                    <FormControl>
+                      <Input
+                        className="h-8 sm:h-9 text-xs sm:text-sm md:text-normal focus-visible:ring-red-700 rounded-r-none"
+                        placeholder="www.youtube.com/playlist?list=example123..."
+                        {...field}
+                      />
+                    </FormControl>
+                    <Button
+                      className=""
+                      variant="insyt"
+                      size="insyt"
+                      type="submit"
+                    >
+                      Analyze
+                    </Button>
+                  </div>
+
+                  <FormDescription className="text-xs sm:md">
+                    You can enter a playlist link, playlist ID or even a video
+                    link from the playlist! This only works with playlists with
+                    upto 50 videos as of now.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
+        <Footer />
+      </div>
     </main>
   );
 }
