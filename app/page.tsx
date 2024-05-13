@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 export default function Home() {
   const [responseData, setResponseData] = useState<ResponseData | null>(null);
+  const [content, setContent] = useState("instructions");
   // Define a type/interface for the response data
   interface ResponseData {
     playlist_name: string;
@@ -42,6 +43,7 @@ export default function Home() {
 
   // Defining submit handler for input form.
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setContent("loading");
     const url = values.urlField;
     console.log(url);
     const regex = /(?:list=)(.*)/;
@@ -60,6 +62,7 @@ export default function Home() {
         if (response.ok) {
           const responseBody = await response.json();
           setResponseData(responseBody);
+          setContent("insights");
           console.log("Response:", responseBody);
           // if (responseData?.playlist_length) {
           //   const formatedDuration = formatTime(responseData?.playlist_length);
@@ -110,22 +113,37 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen overflow-hidden">
+    <main className="min-h-screen">
       <Navbar />
-      <div className="main-content flex flex-col flex-grow justify-center items-center my-36 text-sm mx-5">
-        <span> {responseData && `Title: ${responseData?.playlist_name}`}</span>
-        <span>
-          {responseData && `No of items: ${responseData?.playlist_size}`}
-        </span>
-        <span>
-          The playlist is{" "}
-          {responseData?.playlist_length &&
-            formatTime(responseData.playlist_length, 1)}{" "}
-          long
-        </span>
-
+      <div className="main-content flex flex-grow flex-col justify-center items-center my-14 text-xs md:text-lg mx-5">
+        {content == "instructions" && (
+          <span className="font-bold text-green-900">
+            Enter a playlist link, playlist ID or even a video link from the
+            playlist
+          </span>
+        )}
+        {content == "loading" && (
+          <span className="font-bold text-green-800">Loading...</span>
+        )}
+        {content == "insights" && (
+          <div className="flex flex-col">
+            <span>
+              {" "}
+              {responseData && `Title: ${responseData?.playlist_name}`}
+            </span>
+            <span>
+              {responseData && `No of items: ${responseData?.playlist_size}`}
+            </span>
+            <span>
+              The playlist is{" "}
+              {responseData?.playlist_length &&
+                formatTime(responseData.playlist_length, 1)}{" "}
+              long
+            </span>
+          </div>
+        )}
         {responseData?.playlist_length && (
-          <ul className="text-sm sm:text-normal">
+          <ul className=" mt-5">
             <li>The time it will gonna take you to watch</li>
             <li>
               At normal speed: {formatTime(responseData.playlist_length, 1)}
@@ -139,7 +157,7 @@ export default function Home() {
       </div>
 
       {/* Form + Footer */}
-      <div className="form+footer w-full flex flex-col absolute bottom-0 justify-center items-center space-y-3">
+      <div className="form+footer w-full absolute bottom-0 flex flex-col justify-center items-center space-y-3">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((data) => {
