@@ -140,19 +140,26 @@ export default function Home() {
                 formatTime(responseData.playlist_length, 1)}{" "}
               long
             </span>
+
+            {responseData?.playlist_length && (
+              <ul className=" mt-5">
+                <li>The time it will gonna take you to watch</li>
+                <li>
+                  At normal speed: {formatTime(responseData.playlist_length, 1)}
+                </li>
+                <li>
+                  At 1.25x : {formatTime(responseData.playlist_length, 1.25)}
+                </li>
+                <li>
+                  At 1.50x : {formatTime(responseData.playlist_length, 1.5)}
+                </li>
+                <li>
+                  At 1.75x : {formatTime(responseData.playlist_length, 1.75)}
+                </li>
+                <li>At 2x : {formatTime(responseData.playlist_length, 2)}</li>
+              </ul>
+            )}
           </div>
-        )}
-        {responseData?.playlist_length && (
-          <ul className=" mt-5">
-            <li>The time it will gonna take you to watch</li>
-            <li>
-              At normal speed: {formatTime(responseData.playlist_length, 1)}
-            </li>
-            <li>At 1.25x : {formatTime(responseData.playlist_length, 1.25)}</li>
-            <li>At 1.50x : {formatTime(responseData.playlist_length, 1.5)}</li>
-            <li>At 1.75x : {formatTime(responseData.playlist_length, 1.75)}</li>
-            <li>At 2x : {formatTime(responseData.playlist_length, 2)}</li>
-          </ul>
         )}
       </div>
 
