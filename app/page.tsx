@@ -164,7 +164,7 @@ export default function Home() {
       </div>
 
       {/* Form + Footer */}
-      <div className="form+footer w-full absolute bottom-0 flex flex-col justify-center items-center space-y-3">
+      <div className="form+footer w-full fixed bottom-0 flex flex-col justify-center items-center space-y-3">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((data) => {

@@ -13,7 +13,7 @@ import { useTheme } from "next-themes";
 const Navbar = () => {
   const { setTheme } = useTheme();
   return (
-    <div className="w-full flex items-center h-14 px-4 border-b bg-gray-200 md:px-6 dark:bg-gray-950">
+    <div className="w-full flex items-center h-14 px-4 sticky top-0 border-b bg-gray-200 md:px-6 dark:bg-gray-950">
       <Link
         className="flex items-center me-4 font-bold font-serif text-2xl text-red-600"
         href="/"
