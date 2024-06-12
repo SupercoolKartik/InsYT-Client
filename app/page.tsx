@@ -45,7 +45,6 @@ export default function Home() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setContent("loading");
     const url = values.urlField;
-    console.log(url);
     const regex = /(?:list=)(.*)/;
     const match = url.match(regex);
     if (match) {
@@ -113,19 +112,19 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen">
+    <main className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="main-content flex flex-grow flex-col justify-center items-center my-14 text-xs md:text-lg mx-5">
-        {content == "instructions" && (
+      <div className="flex-grow flex flex-col justify-center items-center overflow-auto text-md md:text-lg mx-5">
+        {content === "instructions" && (
           <span className="font-bold text-green-900">
             Enter a playlist link, playlist ID or even a video link from the
             playlist
           </span>
         )}
-        {content == "loading" && (
+        {content === "loading" && (
           <span className="font-bold text-green-800">Loading...</span>
         )}
-        {content == "insights" && (
+        {content === "insights" && (
           <div className="flex flex-col">
             <span>
               {" "}
@@ -142,10 +141,11 @@ export default function Home() {
             </span>
 
             {responseData?.playlist_length && (
-              <ul className=" mt-5">
+              <ul className="mt-5">
                 <li>The time it will gonna take you to watch</li>
                 <li>
-                  At normal speed: {formatTime(responseData.playlist_length, 1)}
+                  At normal speed :{" "}
+                  {formatTime(responseData.playlist_length, 1)}
                 </li>
                 <li>
                   At 1.25x : {formatTime(responseData.playlist_length, 1.25)}
@@ -164,7 +164,7 @@ export default function Home() {
       </div>
 
       {/* Form + Footer */}
-      <div className="form+footer w-full fixed bottom-0 flex flex-col justify-center items-center space-y-3">
+      <div className="form-footer w-full sticky bottom-0 flex flex-col justify-center items-center pt-2 space-y-3 bg-gray-100 dark:bg-gray-900">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((data) => {
@@ -200,7 +200,7 @@ export default function Home() {
                   <FormDescription className="text-xs sm:md">
                     You can enter a playlist link, playlist ID or even a video
                     link from the playlist! This only works with playlists with
-                    upto 50 videos as of now.
+                    up to 50 videos as of now.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
