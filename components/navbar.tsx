@@ -1,21 +1,17 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/6zk0C5obFbl
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { VscGithub } from "react-icons/vsc";
 import { TbSunLow } from "react-icons/tb";
 import { PiMoonStarsBold } from "react-icons/pi";
 import { useTheme } from "next-themes";
+import { libreBarcode128Text } from "../fonts/fonts";
 
 const Navbar = () => {
   const { setTheme } = useTheme();
   return (
     <div className="w-full flex items-center h-14 px-4 sticky top-0 border-b bg-gray-200 md:px-6 dark:bg-gray-950">
       <Link
-        className="flex items-center me-4 font-bold font-serif text-2xl text-red-600"
+        className={`${libreBarcode128Text.className} flex items-center me-4 font-semibold text-5xl text-red-600`}
         href="/"
       >
         insYT
