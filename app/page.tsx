@@ -131,12 +131,15 @@ export default function Home() {
               {responseData && `Title: ${responseData?.playlist_name}`}
             </span>
             <span>
-              {responseData && `No of items: ${responseData?.playlist_size}`}
+              No of items:
+              {responseData && ` ${responseData?.playlist_size}`}
             </span>
             <span>
               The playlist is{" "}
-              {responseData?.playlist_length &&
-                formatTime(responseData.playlist_length, 1)}{" "}
+              <span className="text-red-600">
+                {responseData?.playlist_length &&
+                  formatTime(responseData.playlist_length, 1)}
+              </span>{" "}
               long
             </span>
 
