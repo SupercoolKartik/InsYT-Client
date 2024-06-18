@@ -128,15 +128,16 @@ export default function Home() {
           <div className="flex flex-col">
             <span>
               {" "}
-              {responseData && `Title: ${responseData?.playlist_name}`}
+              <span className="text-sm">Title:</span>
+              {responseData && ` ${responseData?.playlist_name}`}
             </span>
             <span>
-              No of items:
+              <span className="text-sm">No of items:</span>
               {responseData && ` ${responseData?.playlist_size}`}
             </span>
-            <span>
+            <span className="text-sm">
               The playlist is{" "}
-              <span className="text-red-600">
+              <span className="text-red-600 text-xl font-bold">
                 {responseData?.playlist_length &&
                   formatTime(responseData.playlist_length, 1)}
               </span>{" "}
